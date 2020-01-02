@@ -38,8 +38,7 @@ public final class EntrypointPatchBranding extends EntrypointPatch {
 	@Override
 	public void process(FabricLauncher launcher, Consumer<ClassNode> classEmitter) {
 		for (String brandClassName : ImmutableList.of(
-			"net.minecraft.client.ClientBrandRetriever",
-			"net.minecraft.server.MinecraftServer"
+			"de.ellpeck.rockbottom.init.AbstractGame"
 		)) {
 			try {
 				ClassNode brandClass = loadClass(launcher, brandClassName);
@@ -59,14 +58,14 @@ public final class EntrypointPatchBranding extends EntrypointPatch {
 		boolean applied = false;
 
 		for (MethodNode node : classNode.methods) {
-			if (node.name.equals("getClientModName") || node.name.equals("getServerModName") && node.desc.endsWith(")Ljava/lang/String;")) {
+			if (node.name.equals("getGameBrand") && node.desc.endsWith(")Ljava/lang/String;")) {
 				debug("Applying brand name hook to " + classNode.name + "::" + node.name);
 
 				ListIterator<AbstractInsnNode> it = node.instructions.iterator();
 				while (it.hasNext()) {
 					if (it.next().getOpcode() == Opcodes.ARETURN) {
 						it.previous();
-						it.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/fabricmc/loader/entrypoint/minecraft/hooks/EntrypointBranding", "brand", "(Ljava/lang/String;)Ljava/lang/String;", false));
+						it.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "net/fabricmc/loader/entrypoint/rockbottom/hooks/EntrypointBranding", "brand", "(Ljava/lang/String;)Ljava/lang/String;", false));
 						it.next();
 					}
 				}

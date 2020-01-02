@@ -8,7 +8,7 @@ plugins {
 
 	id 'idea'
 	id 'eclipse'
-	id("fabric-loom") version "0.2.3-SNAPSHOT"
+	id("fabric-loom") version "0.2.7-SNAPSHOT"
 }
 
 sourceCompatibility = 1.8
@@ -38,8 +38,8 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.14.4"
-	mappings "net.fabricmc:yarn:1.14.4+build.1"
+	minecraft "com.mojang:minecraft:1.15.1"
+	mappings "net.fabricmc:yarn:1.15.1+build.23:v2"
 
 	// Minecraft's JAR uses these annotations
 	compile 'com.google.code.findbugs:jsr305:3.0.2'
