@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package net.fabricmc.loader.entrypoint.minecraft;
+package net.fabricmc.loader.entrypoint.rockbottom;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.entrypoint.EntrypointPatch;

@@ -33,7 +33,7 @@ public final class AppletMain {
 	}
 
 	public static void main(String[] args) {
-		AppletFrame me = new AppletFrame("Minecraft", null);
+		AppletFrame me = new AppletFrame("Rock Bottom", null);
 		me.launch(args);
 	}
 }

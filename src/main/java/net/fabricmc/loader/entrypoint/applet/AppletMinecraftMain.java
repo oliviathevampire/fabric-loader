@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package net.fabricmc.loader.game;
+package net.fabricmc.loader.entrypoint.applet;
 
-import com.google.common.collect.ImmutableList;
+import java.io.File;
 
-import java.util.List;
+public final class AppletMinecraftMain {
+	private AppletMinecraftMain() {
 
-public final class GameProviders {
-	private GameProviders() { }
+	}
 
-	public static List<GameProvider> create() {
-		return ImmutableList.of(new MinecraftGameProvider(), new RockBottomGameProvider());
+	public static File hookGameDir(File file) {
+		File proposed = AppletLauncher.gameDir;
+		if (proposed != null) {
+			return proposed;
+		} else {
+			return file;
+		}
+	}
+
+	public static void main(String[] args) {
+		AppletFrame me = new AppletFrame("Minecraft", null);
+		me.launch(args);
 	}
 }
