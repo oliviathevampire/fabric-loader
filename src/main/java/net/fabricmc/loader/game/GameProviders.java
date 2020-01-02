@@ -21,9 +21,9 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 public final class GameProviders {
-	private GameProviders() { }
 
 	public static List<GameProvider> create() {
-		return ImmutableList.of(new MinecraftGameProvider(), new RockBottomGameProvider());
+		return ImmutableList.of(new MinecraftGameProvider(), new RockBottomGameProvider(), new VGGameProvider());
 	}
+
 }

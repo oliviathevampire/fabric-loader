@@ -2,9 +2,8 @@ package net.fabricmc.loader.game;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.entrypoint.EntrypointTransformer;
-import net.fabricmc.loader.entrypoint.minecraft.EntrypointPatchBranding;
-import net.fabricmc.loader.entrypoint.minecraft.EntrypointPatchFML125;
-import net.fabricmc.loader.entrypoint.minecraft.EntrypointPatchHook;
+import net.fabricmc.loader.entrypoint.rockbottom.EntrypointPatchBranding;
+import net.fabricmc.loader.entrypoint.rockbottom.EntrypointPatchHook;
 import net.fabricmc.loader.metadata.BuiltinModMetadata;
 import net.fabricmc.loader.util.Arguments;
 
@@ -22,8 +21,7 @@ public class RockBottomGameProvider implements GameProvider {
 
 	public static final EntrypointTransformer TRANSFORMER = new EntrypointTransformer(it -> Arrays.asList(
 			new EntrypointPatchHook(it),
-			new EntrypointPatchBranding(it),
-			new EntrypointPatchFML125(it)
+			new EntrypointPatchBranding(it)
 	));
 
     @Override
@@ -93,7 +91,7 @@ public class RockBottomGameProvider implements GameProvider {
 
 	@Override
 	public EntrypointTransformer getEntrypointTransformer() {
-		return null;
+		return TRANSFORMER;
 	}
 
 	@Override
