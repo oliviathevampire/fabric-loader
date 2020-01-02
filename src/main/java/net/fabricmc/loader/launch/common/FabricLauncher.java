@@ -17,6 +17,7 @@
 package net.fabricmc.loader.launch.common;
 
 import net.fabricmc.api.EnvType;
+import net.fabricmc.mappings.Mappings;
 
 import java.io.IOException;
 import java.io.InputStream;

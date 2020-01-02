@@ -25,9 +25,10 @@ import net.fabricmc.loader.launch.common.FabricLauncherBase;
 import net.fabricmc.loader.metadata.EntrypointMetadata;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class EntrypointStorage {
-	interface Entry {
+	static interface Entry {
 		<T> T getOrCreate(Class<T> type) throws Exception;
 	}
 
@@ -126,17 +127,13 @@ class EntrypointStorage {
 		));
 	}
 
-	boolean hasEntrypoints(String key) {
-		return entryMap.containsKey(key);
-	}
-
 	protected <T> List<T> getEntrypoints(String key, Class<T> type) {
 		List<Entry> entries = entryMap.get(key);
 		if (entries == null) {
 			return Collections.emptyList();
 		}
 
-		List<Exception> exceptions = new ArrayList<>();
+		boolean hadException = false;
 		List<T> results = new ArrayList<>(entries.size());
 		for (Entry entry : entries) {
 			try {
@@ -145,18 +142,13 @@ class EntrypointStorage {
 					results.add(result);
 				}
 			} catch (Exception e) {
-				exceptions.add(e);
+				hadException = true;
+				FabricLoader.INSTANCE.getLogger().error("Exception occured while getting '" + key + "' entrypoints @ " + entry, e);
 			}
 		}
 
-		if (!exceptions.isEmpty()) {
-			EntrypointException e = new EntrypointException("Could not look up entries for entrypoint " + key + "!");
-
-			for (Exception suppressed : exceptions) {
-				e.addSuppressed(suppressed);
-			}
-
-			throw e;
+		if (hadException) {
+			throw new EntrypointException("Could not look up entries for entrypoint " + key + "!");
 		} else {
 			return results;
 		}

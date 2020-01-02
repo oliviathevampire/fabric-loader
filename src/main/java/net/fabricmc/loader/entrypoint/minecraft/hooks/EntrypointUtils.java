@@ -23,33 +23,23 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 
-public final class EntrypointUtils {
-	public static <T> void invoke(String name, Class<T> type, Consumer<? super T> invoker) {
-		@SuppressWarnings("deprecation")
-		FabricLoader loader = FabricLoader.INSTANCE;
+final class EntrypointUtils {
+	private EntrypointUtils() {
 
-		if (!loader.hasEntrypoints(name)) {
-			loader.getLogger().debug("No subscribers for entrypoint '" + name + "'");
-		} else {
-			invoke0(name, type, invoker);
-		}
 	}
 
-	private static <T> void invoke0(String name, Class<T> type, Consumer<? super T> invoker) {
-		@SuppressWarnings("deprecation")
-		FabricLoader loader = FabricLoader.INSTANCE;
-		Collection<T> entrypoints = loader.getEntrypoints(name, type);
+	static <T> void logErrors(String name, Collection<T> entrypoints, Consumer<T> entrypointConsumer) {
 		List<Throwable> errors = new ArrayList<>();
 
-		loader.getLogger().debug("Iterating over entrypoint '" + name + "'");
+		FabricLoader.INSTANCE.getLogger().debug("Iterating over entrypoint '" + name + "'");
 
-		for (T e : entrypoints) {
+		entrypoints.forEach((e) -> {
 			try {
-				invoker.accept(e);
+				entrypointConsumer.accept(e);
 			} catch (Throwable t) {
 				errors.add(t);
 			}
-		}
+		});
 
 		if (!errors.isEmpty()) {
 			RuntimeException exception = new RuntimeException("Could not execute entrypoint stage '" + name + "' due to errors!");
@@ -57,7 +47,7 @@ public final class EntrypointUtils {
 			for (Throwable t : errors) {
 				exception.addSuppressed(t);
 			}
-
+			
 			throw exception;
 		}
 	}

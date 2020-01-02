@@ -43,10 +43,6 @@ public interface GameProvider {
 	EntrypointTransformer getEntrypointTransformer();
 	void launch(ClassLoader loader);
 
-	default boolean canOpenErrorGui() {
-		return true;
-	}
-
 	public static class BuiltinMod {
 		public BuiltinMod(URL url, ModMetadata metadata) {
 			this.url = url;
